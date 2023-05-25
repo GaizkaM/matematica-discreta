@@ -41,7 +41,8 @@ import java.util.HashSet;
  * assegurau-vos de que el vostre editor de texte estigui configurat amb codificació UTF-8.
  */
 class Entrega {
-  /*
+
+    /*
    * Aquí teniu els exercicis del Tema 1 (Lògica).
    *
    * Els mètodes reben de paràmetre l'univers (representat com un array) i els predicats adients
@@ -53,135 +54,173 @@ class Entrega {
    * En cada un d'aquests exercicis us demanam que donat l'univers i els predicats retorneu `true`
    * o `false` segons si la proposició donada és certa (suposau que l'univers és suficientment
    * petit com per poder provar tots els casos que faci falta).
-   */
-  static class Tema1 {
-    /*
+     */
+    static class Tema1 {
+
+        /*
      * És cert que ∀x ∃!y. P(x) -> Q(x,y) ?
-     */
-    static boolean exercici1(int[] universe, Predicate<Integer> p, BiPredicate<Integer, Integer> q) {
-      return false; // TO DO
-      
-      for (int x : universe) {
-        boolean existsUnique = false;
-        for (int y : universe) {
-          if (p.test(x) && q.test(x, y)) {
-            if (existsUnique) {
-              return false; // S'ha trobat més d'un y que satisfà la condició
+         */
+        static boolean exercici1(int[] universe, Predicate<Integer> p, BiPredicate<Integer, Integer> q) {
+
+            for (int x : universe) {
+                boolean Unico = false;
+                for (int y : universe) {
+                    if (p.test(x) && q.test(x, y)) {
+                        if (Unico) {
+                            return false; // S'ha trobat més d'un y que satisfà la condició
+                        }
+                        Unico = true;
+                    }
+                }
+                if (p.test(x) && !Unico) {
+                    return false; // No s'ha trobat cap y que satisfà la condició
+                }
             }
-            existsUnique = true;
-          }
+            return true; // Per a tot x, hi ha exactament un y que satisfà la condició
         }
-        if (p.test(x) && !existsUnique) {
-          return false; // No s'ha trobat cap y que satisfà la condició
-        }
-      }
-      return true; // Per a tot x, hi ha exactament un y que satisfà la condició
-    }
 
-    /*
+        /*
      * És cert que ∃!x ∀y. P(y) -> Q(x,y) ?
-     */
-    static boolean exercici2(int[] universe, Predicate<Integer> p, BiPredicate<Integer, Integer> q) {
-      return false; // TO DO
-    }
+         */
+        static boolean exercici2(int[] universe, Predicate<Integer> p, BiPredicate<Integer, Integer> q) {
 
-    /*
+            for (int y : universe) {
+                boolean Unico = false;
+                for (int x : universe) {
+                    if (p.test(y) && q.test(x, y)) {
+                        if (Unico) {
+                            return false; // Se ha encontrado más de un X que satiface la 
+                            //condición
+                        }
+                        Unico = true;
+                    }
+                }
+                if (p.test(y) && !Unico) {
+                    return false; // No se ha encontrado ningún Y que cumpla la condición
+                }
+            }
+            return true; // Recorriendo todo Y, solo se ha encontrado un Y que cumpla
+            //la condición
+        }
+
+        /*
      * És cert que ∃x,y ∀z. P(x,z) ⊕ Q(y,z) ?
-     */
-    static boolean exercici3(int[] universe, BiPredicate<Integer, Integer> p, BiPredicate<Integer, Integer> q) {
-      return false; // TO DO
-    }
+         */
+        static boolean exercici3(int[] universe, BiPredicate<Integer, Integer> p, BiPredicate<Integer, Integer> q) {
 
-    /*
+            for (int x : universe) {
+                for (int y : universe) {
+                    for (int z : universe) {
+                        //
+                        if (!(p.test(x, z)) || (q.test(y, z))
+                                && ((p.test(x, z)) || (q.test(y, z)))) {
+                            
+                            return false;   //Si la negación de la condición original se cumple, eso significa
+                                            //que la condición es falsa
+                                            
+                        }
+                    }
+                    
+                }
+            }
+            return true;
+        }
+
+        /*
      * És cert que (∀x. P(x)) -> (∀x. Q(x)) ?
-     */
-    static boolean exercici4(int[] universe, Predicate<Integer> p, Predicate<Integer> q) {
-      return false; // TO DO
+         */
+        static boolean exercici4(int[] universe, Predicate<Integer> p, Predicate<Integer> q) {
+            for (int x:universe){
+                if ((p.test(x))&& !(q.test(x))){
+                    return false;
+                    }
+                }
+            return true;
+        }
+
+        /*
+     * Aquí teniu alguns exemples i proves relacionades amb aquests exercicis (vegeu `main`)
+         */
+//    static void tests() {
+//      // Exercici 1
+//      // ∀x ∃!y. P(x) -> Q(x,y) ?
+//
+////      assertThat(
+////          exercici1(
+////              new int[] { 2, 3, 5, 6 },
+////              x -> x != 4,
+////              (x, y) -> x == y
+////          )
+////      );
+////
+////      assertThat(
+////          !exercici1(
+////              new int[] { -2, -1, 0, 1, 2, 3 },
+////              x -> x != 0,
+////              (x, y) -> x * y == 1
+////          )
+////      );
+////
+////      // Exercici 2
+////      // ∃!x ∀y. P(y) -> Q(x,y) ?
+////
+////      assertThat(
+////          exercici2(
+////              new int[] { -1, 1, 2, 3, 4 },
+////              y -> y <= 0,
+////              (x, y) -> x == -y
+////          )
+////      );
+////
+////      assertThat(
+////          !exercici2(
+////              new int[] { -2, -1, 1, 2, 3, 4 },
+////              y -> y < 0,
+////              (x, y) -> x * y == 1
+////          )
+////      );
+//
+//      // Exercici 3
+//      // ∃x,y ∀z. P(x,z) ⊕ Q(y,z) ?
+//
+//      assertThat(
+//          exercici3(
+//              new int[] { 2, 3, 4, 5, 6, 7, 8 },
+//              (x, z) -> z % x == 0,
+//              (y, z) -> z % y == 1
+//          )
+//      );
+//
+//      assertThat(
+//          !exercici3(
+//              new int[] { 2, 3 },
+//              (x, z) -> z % x == 1,
+//              (y, z) -> z % y == 1
+//          )
+//      );
+//
+//      // Exercici 4
+//      // (∀x. P(x)) -> (∀x. Q(x)) ?
+//
+//      assertThat(
+//          exercici4(
+//              new int[] { 0, 1, 2, 3, 4, 5, 8, 9, 16 },
+//              x -> x % 2 == 0, // x és múltiple de 2
+//              x -> x % 4 == 0 // x és múltiple de 4
+//          )
+//      );
+//
+//      assertThat(
+//          !exercici4(
+//              new int[] { 0, 2, 4, 6, 8, 16 },
+//              x -> x % 2 == 0, // x és múltiple de 2
+//              x -> x % 4 == 0 // x és múltiple de 4
+//          )
+//      );
+//    }
     }
 
     /*
-     * Aquí teniu alguns exemples i proves relacionades amb aquests exercicis (vegeu `main`)
-     */
-    static void tests() {
-      // Exercici 1
-      // ∀x ∃!y. P(x) -> Q(x,y) ?
-
-      assertThat(
-          exercici1(
-              new int[] { 2, 3, 5, 6 },
-              x -> x != 4,
-              (x, y) -> x == y
-          )
-      );
-
-      assertThat(
-          !exercici1(
-              new int[] { -2, -1, 0, 1, 2, 3 },
-              x -> x != 0,
-              (x, y) -> x * y == 1
-          )
-      );
-
-      // Exercici 2
-      // ∃!x ∀y. P(y) -> Q(x,y) ?
-
-      assertThat(
-          exercici2(
-              new int[] { -1, 1, 2, 3, 4 },
-              y -> y <= 0,
-              (x, y) -> x == -y
-          )
-      );
-
-      assertThat(
-          !exercici2(
-              new int[] { -2, -1, 1, 2, 3, 4 },
-              y -> y < 0,
-              (x, y) -> x * y == 1
-          )
-      );
-
-      // Exercici 3
-      // ∃x,y ∀z. P(x,z) ⊕ Q(y,z) ?
-
-      assertThat(
-          exercici3(
-              new int[] { 2, 3, 4, 5, 6, 7, 8 },
-              (x, z) -> z % x == 0,
-              (y, z) -> z % y == 1
-          )
-      );
-
-      assertThat(
-          !exercici3(
-              new int[] { 2, 3 },
-              (x, z) -> z % x == 1,
-              (y, z) -> z % y == 1
-          )
-      );
-
-      // Exercici 4
-      // (∀x. P(x)) -> (∀x. Q(x)) ?
-
-      assertThat(
-          exercici4(
-              new int[] { 0, 1, 2, 3, 4, 5, 8, 9, 16 },
-              x -> x % 2 == 0, // x és múltiple de 2
-              x -> x % 4 == 0 // x és múltiple de 4
-          )
-      );
-
-      assertThat(
-          !exercici4(
-              new int[] { 0, 2, 4, 6, 8, 16 },
-              x -> x % 2 == 0, // x és múltiple de 2
-              x -> x % 4 == 0 // x és múltiple de 4
-          )
-      );
-    }
-  }
-
-  /*
    * Aquí teniu els exercicis del Tema 2 (Conjunts).
    *
    * Per senzillesa tractarem els conjunts com arrays (sense elements repetits). Per tant, un
@@ -196,161 +235,201 @@ class Entrega {
    * Les funcions f : A -> B (on A i B son subconjunts dels enters) les representam donant el domini
    * int[] a, el codomini int[] b, i f un objecte de tipus Function<Integer, Integer> que podeu
    * avaluar com f.apply(x) (on x és d'a i el resultat f.apply(x) és de b).
-   */
-  static class Tema2 {
-    /*
+     */
+    static class Tema2 {
+
+        /*
      * Comprovau si la relació `rel` definida sobre `a` és d'equivalència.
      *
      * Podeu soposar que `a` està ordenat de menor a major.
-     */
-    static boolean exercici1(int[] a, int[][] rel) {
-      return false; // TO DO
-    }
+         */
+        static boolean exercici1(int[] a, int[][] rel) {
+            for(int x: a){
+                boolean es_reflexiva=false;
+                boolean es_simetrica=false;
+                boolean es_transitiva=true;
+                
+                for(int[] parejaA : rel){
+                    if ((parejaA[0] == x) 
+                        && (parejaA[1]== x)){
+                        es_reflexiva= true;
+                    }
+                    if(parejaA[0] == x){
+                        for(int [] parejaB :rel){
+                            if (parejaB[0]==parejaA[1] && parejaB[1]==x){
+                                es_simetrica=true;
+                                break;
+                            }
+                        }
+                    if(!es_simetrica){
+                        return false;
+                    }
+                }
+                for (int[] parejaB:rel){
+                    if((parejaA[1]==parejaB[0])&&(parejaA[0]!=parejaB[1])){
+                        boolean condicion_trans=false;
+                        for(int[]parejaC:rel){
+                            if((parejaC[0]==parejaA[0])&&(parejaC[1]==parejaB[1])){
+                            condicion_trans=true;
+                            break;
+                        }
+                        }
+                        if(!condicion_trans){
+                            es_transitiva=false;
+                        }
+                    }
+                }
+                }
+                if(!es_reflexiva && !es_simetrica && !es_transitiva){
+                    return false;
+                }
+            }
+            return true;
+        }
 
-    /*
+        /*
      * Comprovau si la relació `rel` definida sobre `a` és d'equivalència. Si ho és, retornau el
      * cardinal del conjunt quocient de `a` sobre `rel`. Si no, retornau -1.
      *
      * Podeu soposar que `a` està ordenat de menor a major.
-     */
-    static int exercici2(int[] a, int[][] rel) {
-      return 0; // TO DO
-    }
+         */
+        static int exercici2(int[] a, int[][] rel) {
+            return 0; // TO DO
+        }
 
-    /*
+        /*
      * Comprovau si la relació `rel` definida entre `a` i `b` és una funció.
      *
      * Podeu soposar que `a` i `b` estan ordenats de menor a major.
-     */
-    static boolean exercici3(int[] a, int[] b, int[][] rel) {
-      return false; // TO DO
-    }
+         */
+        static boolean exercici3(int[] a, int[] b, int[][] rel) {
+            return false; // TO DO
+        }
 
-    /*
+        /*
      * Suposau que `f` és una funció amb domini `dom` i codomini `codom`.  Retornau:
      * - Si és exhaustiva, el màxim cardinal de l'antiimatge de cada element de `codom`.
      * - Si no, si és injectiva, el cardinal de l'imatge de `f` menys el cardinal de `codom`.
      * - En qualsevol altre cas, retornau 0.
      *
      * Podeu suposar que `dom` i `codom` estàn ordenats de menor a major.
-     */
-    static int exercici4(int[] dom, int[] codom, Function<Integer, Integer> f) {
-      return -1; // TO DO
+         */
+        static int exercici4(int[] dom, int[] codom, Function<Integer, Integer> f) {
+            return -1; // TO DO
+        }
+
+        /*
+     * Aquí teniu alguns exemples i proves relacionades amb aquests exercicis (vegeu `main`)
+         */
+//    static void tests() {
+//      // Exercici 1
+//      // `rel` és d'equivalencia?
+//
+//      assertThat(
+//          exercici1(
+//              new int[] { 0, 1, 2, 3 },
+//              new int[][] { {0, 0}, {1, 1}, {2, 2}, {3, 3}, {1, 3}, {3, 1} }
+//          )
+//      );
+//
+//      assertThat(
+//          !exercici1(
+//              new int[] { 0, 1, 2, 3 },
+//              new int[][] { {0, 0}, {1, 1}, {2, 2}, {3, 3}, {1, 2}, {1, 3}, {2, 1}, {3, 1} }
+//          )
+//      );
+//
+//      // Exercici 2
+//      // si `rel` és d'equivalència, quants d'elements té el seu quocient?
+//
+//      final int[] int09 = { 0, 1, 2, 3, 4, 5, 6, 7, 8 };
+//
+//      assertThat(
+//          exercici2(
+//            int09,
+//            generateRel(int09, int09, (x, y) -> x % 3 == y % 3)
+//          )
+//          == 3
+//      );
+//
+//      assertThat(
+//          exercici2(
+//              new int[] { 1, 2, 3 },
+//              new int[][] { {1, 1}, {2, 2} }
+//          )
+//          == -1
+//      );
+//
+//      // Exercici 3
+//      // `rel` és una funció?
+//
+//      final int[] int05 = { 0, 1, 2, 3, 4, 5 };
+//
+//      assertThat(
+//          exercici3(
+//            int05,
+//            int09,
+//            generateRel(int05, int09, (x, y) -> x == y)
+//          )
+//      );
+//
+//      assertThat(
+//          !exercici3(
+//            int05,
+//            int09,
+//            generateRel(int05, int09, (x, y) -> x == y/2)
+//          )
+//      );
+//
+//      // Exercici 4
+//      // el major |f^-1(y)| de cada y de `codom` si f és exhaustiva
+//      // sino, |im f| - |codom| si és injectiva
+//      // sino, 0
+//
+//      assertThat(
+//          exercici4(
+//            int09,
+//            int05,
+//            x -> x / 4
+//          )
+//          == 0
+//      );
+//
+//      assertThat(
+//          exercici4(
+//            int05,
+//            int09,
+//            x -> x + 3
+//          )
+//          == int05.length - int09.length
+//      );
+//
+//      assertThat(
+//          exercici4(
+//            int05,
+//            int05,
+//            x -> (x + 3) % 6
+//          )
+//          == 1
+//      );
+//    }
+        /// Genera un array int[][] amb els elements {a, b} (a de as, b de bs) que satisfàn pred.test(a, b)
+        static int[][] generateRel(int[] as, int[] bs, BiPredicate<Integer, Integer> pred) {
+            ArrayList<int[]> rel = new ArrayList<>();
+
+            for (int a : as) {
+                for (int b : bs) {
+                    if (pred.test(a, b)) {
+                        rel.add(new int[]{a, b});
+                    }
+                }
+            }
+
+            return rel.toArray(new int[][]{});
+        }
     }
 
     /*
-     * Aquí teniu alguns exemples i proves relacionades amb aquests exercicis (vegeu `main`)
-     */
-    static void tests() {
-      // Exercici 1
-      // `rel` és d'equivalencia?
-
-      assertThat(
-          exercici1(
-              new int[] { 0, 1, 2, 3 },
-              new int[][] { {0, 0}, {1, 1}, {2, 2}, {3, 3}, {1, 3}, {3, 1} }
-          )
-      );
-
-      assertThat(
-          !exercici1(
-              new int[] { 0, 1, 2, 3 },
-              new int[][] { {0, 0}, {1, 1}, {2, 2}, {3, 3}, {1, 2}, {1, 3}, {2, 1}, {3, 1} }
-          )
-      );
-
-      // Exercici 2
-      // si `rel` és d'equivalència, quants d'elements té el seu quocient?
-
-      final int[] int09 = { 0, 1, 2, 3, 4, 5, 6, 7, 8 };
-
-      assertThat(
-          exercici2(
-            int09,
-            generateRel(int09, int09, (x, y) -> x % 3 == y % 3)
-          )
-          == 3
-      );
-
-      assertThat(
-          exercici2(
-              new int[] { 1, 2, 3 },
-              new int[][] { {1, 1}, {2, 2} }
-          )
-          == -1
-      );
-
-      // Exercici 3
-      // `rel` és una funció?
-
-      final int[] int05 = { 0, 1, 2, 3, 4, 5 };
-
-      assertThat(
-          exercici3(
-            int05,
-            int09,
-            generateRel(int05, int09, (x, y) -> x == y)
-          )
-      );
-
-      assertThat(
-          !exercici3(
-            int05,
-            int09,
-            generateRel(int05, int09, (x, y) -> x == y/2)
-          )
-      );
-
-      // Exercici 4
-      // el major |f^-1(y)| de cada y de `codom` si f és exhaustiva
-      // sino, |im f| - |codom| si és injectiva
-      // sino, 0
-
-      assertThat(
-          exercici4(
-            int09,
-            int05,
-            x -> x / 4
-          )
-          == 0
-      );
-
-      assertThat(
-          exercici4(
-            int05,
-            int09,
-            x -> x + 3
-          )
-          == int05.length - int09.length
-      );
-
-      assertThat(
-          exercici4(
-            int05,
-            int05,
-            x -> (x + 3) % 6
-          )
-          == 1
-      );
-    }
-
-    /// Genera un array int[][] amb els elements {a, b} (a de as, b de bs) que satisfàn pred.test(a, b)
-    static int[][] generateRel(int[] as, int[] bs, BiPredicate<Integer, Integer> pred) {
-      ArrayList<int[]> rel = new ArrayList<>();
-
-      for (int a : as) {
-        for (int b : bs) {
-          if (pred.test(a, b)) {
-            rel.add(new int[] { a, b });
-          }
-        }
-      }
-
-      return rel.toArray(new int[][] {});
-    }
-  }
-
-  /*
    * Aquí teniu els exercicis del Tema 3 (Grafs).
    *
    * Donarem els grafs en forma de diccionari d'adjacència, és a dir, un graf serà un array
@@ -361,164 +440,167 @@ class Entrega {
    *  int[][] g = {{1}, {2}, {0}}        (dirigit: v0 -> {v1}, v1 -> {v2}, v2 -> {v0})
    *
    * Podeu suposar que cap dels grafs té llaços.
-   */
-  static class Tema3 {
-    /*
+     */
+    static class Tema3 {
+
+        /*
      * Retornau l'ordre menys la mida del graf (no dirigit).
-     */
-    static int exercici1(int[][] g) {
-      return -1; // TO DO
-    }
+         */
+        static int exercici1(int[][] g) {
+            return -1; // TO DO
+        }
 
-    /*
+        /*
      * Suposau que el graf (no dirigit) és connex. És bipartit?
-     */
-    static boolean exercici2(int[][] g) {
-      return false; // TO DO
-    }
+         */
+        static boolean exercici2(int[][] g) {
+            return false; // TO DO
+        }
 
-    /*
+        /*
      * Suposau que el graf és un DAG. Retornau el nombre de descendents amb grau de sortida 0 del
      * vèrtex i-èssim.
-     */
-    static int exercici3(int[][] g, int i) {
-      return -1; // TO DO
-    }
+         */
+        static int exercici3(int[][] g, int i) {
+            return -1; // TO DO
+        }
 
-    /*
+        /*
      * Donat un arbre arrelat (dirigit, suposau que l'arrel es el vèrtex 0), trobau-ne el diàmetre.
      * Suposau que totes les arestes tenen pes 1.
-     */
-    static int exercici4(int[][] g) {
-      return -1; // TO DO
+         */
+        static int exercici4(int[][] g) {
+            return -1; // TO DO
+        }
+
+        /*
+     * Aquí teniu alguns exemples i proves relacionades amb aquests exercicis (vegeu `main`)
+         */
+//    static void tests() {
+//      final int[][] undirectedK6 = {
+//        { 1, 2, 3, 4, 5 },
+//        { 0, 2, 3, 4, 5 },
+//        { 0, 1, 3, 4, 5 },
+//        { 0, 1, 2, 4, 5 },
+//        { 0, 1, 2, 3, 5 },
+//        { 0, 1, 2, 3, 4 },
+//      };
+//
+//      /*
+//         1
+//      4  0  2
+//         3
+//      */
+//      final int[][] undirectedW4 = {
+//        { 1, 2, 3, 4 },
+//        { 0, 2, 4 },
+//        { 0, 1, 3 },
+//        { 0, 2, 4 },
+//        { 0, 1, 3 },
+//      };
+//
+//      // 0, 1, 2 | 3, 4
+//      final int[][] undirectedK23 = {
+//        { 3, 4 },
+//        { 3, 4 },
+//        { 3, 4 },
+//        { 0, 1, 2 },
+//        { 0, 1, 2 },
+//      };
+//
+//      /*
+//             7
+//             0
+//           1   2
+//             3   8
+//             4
+//           5   6
+//      */
+//      final int[][] directedG1 = {
+//        { 1, 2 }, // 0
+//        { 3 },    // 1
+//        { 3, 8 }, // 2
+//        { 4 },    // 3
+//        { 5, 6 }, // 4
+//        {},       // 5
+//        {},       // 6
+//        { 0 },    // 7
+//        {},
+//      };
+//
+//
+//      /*
+//              0
+//         1    2     3
+//            4   5   6
+//           7 8
+//      */
+//
+//      final int[][] directedRTree1 = {
+//        { 1, 2, 3 }, // 0 = r
+//        {},          // 1
+//        { 4, 5 },    // 2
+//        { 6 },       // 3
+//        { 7, 8 },    // 4
+//        {},          // 5
+//        {},          // 6
+//        {},          // 7
+//        {},          // 8
+//      };
+//
+//      /*
+//            0
+//            1
+//         2     3
+//             4   5
+//                6  7
+//      */
+//
+//      final int[][] directedRTree2 = {
+//        { 1 },
+//        { 2, 3 },
+//        {},
+//        { 4, 5 },
+//        {},
+//        { 6, 7 },
+//        {},
+//        {},
+//      };
+//
+//      assertThat(exercici1(undirectedK6) == 6 - 5*6/2);
+//      assertThat(exercici1(undirectedW4) == 5 - 2*4);
+//
+//      assertThat(exercici2(undirectedK23));
+//      assertThat(!exercici2(undirectedK6));
+//
+//      assertThat(exercici3(directedG1, 0) == 3);
+//      assertThat(exercici3(directedRTree1, 2) == 3);
+//
+//      assertThat(exercici4(directedRTree1) == 5);
+//      assertThat(exercici4(directedRTree2) == 4);
+//    }
     }
 
     /*
-     * Aquí teniu alguns exemples i proves relacionades amb aquests exercicis (vegeu `main`)
-     */
-    static void tests() {
-      final int[][] undirectedK6 = {
-        { 1, 2, 3, 4, 5 },
-        { 0, 2, 3, 4, 5 },
-        { 0, 1, 3, 4, 5 },
-        { 0, 1, 2, 4, 5 },
-        { 0, 1, 2, 3, 5 },
-        { 0, 1, 2, 3, 4 },
-      };
-
-      /*
-         1
-      4  0  2
-         3
-      */
-      final int[][] undirectedW4 = {
-        { 1, 2, 3, 4 },
-        { 0, 2, 4 },
-        { 0, 1, 3 },
-        { 0, 2, 4 },
-        { 0, 1, 3 },
-      };
-
-      // 0, 1, 2 | 3, 4
-      final int[][] undirectedK23 = {
-        { 3, 4 },
-        { 3, 4 },
-        { 3, 4 },
-        { 0, 1, 2 },
-        { 0, 1, 2 },
-      };
-
-      /*
-             7
-             0
-           1   2
-             3   8
-             4
-           5   6
-      */
-      final int[][] directedG1 = {
-        { 1, 2 }, // 0
-        { 3 },    // 1
-        { 3, 8 }, // 2
-        { 4 },    // 3
-        { 5, 6 }, // 4
-        {},       // 5
-        {},       // 6
-        { 0 },    // 7
-        {},
-      };
-
-
-      /*
-              0
-         1    2     3
-            4   5   6
-           7 8
-      */
-
-      final int[][] directedRTree1 = {
-        { 1, 2, 3 }, // 0 = r
-        {},          // 1
-        { 4, 5 },    // 2
-        { 6 },       // 3
-        { 7, 8 },    // 4
-        {},          // 5
-        {},          // 6
-        {},          // 7
-        {},          // 8
-      };
-
-      /*
-            0
-            1
-         2     3
-             4   5
-                6  7
-      */
-
-      final int[][] directedRTree2 = {
-        { 1 },
-        { 2, 3 },
-        {},
-        { 4, 5 },
-        {},
-        { 6, 7 },
-        {},
-        {},
-      };
-
-      assertThat(exercici1(undirectedK6) == 6 - 5*6/2);
-      assertThat(exercici1(undirectedW4) == 5 - 2*4);
-
-      assertThat(exercici2(undirectedK23));
-      assertThat(!exercici2(undirectedK6));
-
-      assertThat(exercici3(directedG1, 0) == 3);
-      assertThat(exercici3(directedRTree1, 2) == 3);
-
-      assertThat(exercici4(directedRTree1) == 5);
-      assertThat(exercici4(directedRTree2) == 4);
-    }
-  }
-
-  /*
    * Aquest mètode `main` conté alguns exemples de paràmetres i dels resultats que haurien de donar
    * els exercicis. Podeu utilitzar-los de guia i també en podeu afegir d'altres (no els tendrem en
    * compte, però és molt recomanable).
    *
    * Podeu aprofitar el mètode `assertThat` per comprovar fàcilment que un valor sigui `true`.
-   */
-  public static void main(String[] args) {
-    Tema1.tests();
-    Tema2.tests();
-    Tema3.tests();
-  }
+     */
+    public static void main(String[] args) {
+//    Tema1.tests();
+//    Tema2.tests();
+//    Tema3.tests();
+//      Tema1.exercici1();
+    }
 
-  /// Si b és cert, no fa res. Si b és fals, llança una excepció (AssertionError).
-  static void assertThat(boolean b) {
-    if (!b)
-      throw new AssertionError();
-  }
+    /// Si b és cert, no fa res. Si b és fals, llança una excepció (AssertionError).
+    static void assertThat(boolean b) {
+        if (!b) {
+            throw new AssertionError();
+        }
+    }
 }
 
 // vim: set textwidth=100 shiftwidth=2 expandtab :
