@@ -61,7 +61,7 @@ class Entrega {
     static boolean exercici1(int[] universe, Predicate<Integer> p, BiPredicate<Integer, Integer> q) {
       return false; // TO DO
       
-        for (int x : universe) {
+      for (int x : universe) {
         boolean existsUnique = false;
         for (int y : universe) {
           if (p.test(x) && q.test(x, y)) {
@@ -70,7 +70,12 @@ class Entrega {
             }
             existsUnique = true;
           }
-      
+        }
+        if (p.test(x) && !existsUnique) {
+          return false; // No s'ha trobat cap y que satisfà la condició
+        }
+      }
+      return true; // Per a tot x, hi ha exactament un y que satisfà la condició
     }
 
     /*
