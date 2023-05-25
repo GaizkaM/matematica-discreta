@@ -60,6 +60,17 @@ class Entrega {
      */
     static boolean exercici1(int[] universe, Predicate<Integer> p, BiPredicate<Integer, Integer> q) {
       return false; // TO DO
+      
+        for (int x : universe) {
+        boolean existsUnique = false;
+        for (int y : universe) {
+          if (p.test(x) && q.test(x, y)) {
+            if (existsUnique) {
+              return false; // S'ha trobat més d'un y que satisfà la condició
+            }
+            existsUnique = true;
+          }
+      
     }
 
     /*
