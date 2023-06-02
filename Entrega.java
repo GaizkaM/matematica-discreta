@@ -294,7 +294,50 @@ class Entrega {
      * Podeu soposar que `a` està ordenat de menor a major.
          */
         static int exercici2(int[] a, int[][] rel) {
-            return 0; // TO DO
+                    for(int x: a){
+                boolean es_reflexiva=false;
+                boolean es_simetrica=false;
+                boolean es_transitiva=true;
+                
+                for(int[] parejaA : rel){
+                    if ((parejaA[0] == x) 
+                        && (parejaA[1]== x)){
+                        es_reflexiva= true;
+                    }
+                    if(parejaA[0] == x){
+                        for(int [] parejaB :rel){
+                            if (parejaB[0]==parejaA[1] && parejaB[1]==x){
+                                es_simetrica=true;
+                                break;
+                            }
+                        }
+                    if(!es_simetrica){
+                        return -1;
+                    }
+                }
+                for (int[] parejaB:rel){
+                    if((parejaA[1]==parejaB[0])&&(parejaA[0]!=parejaB[1])){
+                        boolean condicion_trans=false;
+                        for(int[]parejaC:rel){
+                            if((parejaC[0]==parejaA[0])&&(parejaC[1]==parejaB[1])){
+                            condicion_trans=true;
+                            break;
+                        }
+                        }
+                        if(!condicion_trans){
+                            es_transitiva=false;
+                        }
+                    }
+                }
+                }
+                if(!es_reflexiva && !es_simetrica && !es_transitiva){
+                    return -1;
+                }
+            }
+            //cardinal del conjunto cociente de a y rel
+            // cardinal= |A| + |rel| - |A y rel|
+            return true;
+        }
         }
 
         /*
