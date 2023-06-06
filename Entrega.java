@@ -7,6 +7,7 @@ import java.util.function.IntPredicate;
 import java.util.function.Predicate;
 import java.util.Set;
 import java.util.HashSet;
+import java.util.List;
 
 /*
  * Aquesta entrega consisteix en implementar tots els mètodes annotats amb el comentari "// TO DO".
@@ -294,7 +295,10 @@ class Entrega {
      * Podeu soposar que `a` està ordenat de menor a major.
          */
         static int exercici2(int[] a, int[][] rel) {
-                    for(int x: a){
+            
+            int cardinalConjuntoCociente = a.length + rel.length;
+                    
+            for(int x: a){
                 boolean es_reflexiva=false;
                 boolean es_simetrica=false;
                 boolean es_transitiva=true;
@@ -335,19 +339,61 @@ class Entrega {
                 }
             }
             //cardinal del conjunto cociente de a y rel
-            // cardinal= |A| + |rel| - |A y rel|
-            return true;
-        }
+            // Calcular el cardinal del conjunto cociente
+            for (int[] pareja : rel) {
+                if (pareja[0] == pareja[1]) {
+                    cardinalConjuntoCociente--; // Restar las parejas reflexivas
+                }   
+            }
+    
+            return cardinalConjuntoCociente;
         }
 
-        /*
-     * Comprovau si la relació `rel` definida entre `a` i `b` és una funció.
-     *
-     * Podeu soposar que `a` i `b` estan ordenats de menor a major.
-         */
-        static boolean exercici3(int[] a, int[] b, int[][] rel) {
-            return false; // TO DO
+    /*
+    * Comprovau si la relació `rel` definida entre `a` i `b` és una funció.
+    *
+    * Podeu soposar que `a` i `b` estan ordenats de menor a major.
+    */
+        
+    static boolean exercici3(int[] a, int[] b, int[][] rel) {
+            
+    // Verificar si la mida de rel coincideix amb la mida de a i b
+    if (rel.length != a.length || rel.length != b.length) {
+        return false;
+    }
+    
+    // Comprovar si cada element de a té una correspondència única a b
+    for (int elementA : a) {
+        boolean correspondencia = false;
+        
+        // Recorregut
+        for (int[] pareja : rel) {
+            if (pareja[0] == elementA) {
+                // Verificar si aquest element ja té una correspondència
+                if (correspondencia) {
+                    return false; // L'element té múltiples correspondències
+                }
+                
+                correspondencia = true;
+                
+                // Verificar si la correspondència és vàlida
+                if (pareja[1] != b[Arrays.asList(a).indexOf(elementA)]) {                   
+                    // La correspondència no és correcta
+                    return false; 
+                }
+            }
         }
+        
+        // Verificar si l'element té una correspondència
+        if (!correspondencia) {
+            return false;
+        }
+    }
+    
+    // Si s'han superat totes les comprovacions, és una funció vàlida
+    return true;
+
+    }
 
         /*
      * Suposau que `f` és una funció amb domini `dom` i codomini `codom`.  Retornau:
@@ -356,106 +402,192 @@ class Entrega {
      * - En qualsevol altre cas, retornau 0.
      *
      * Podeu suposar que `dom` i `codom` estàn ordenats de menor a major.
-         */
+        */
         static int exercici4(int[] dom, int[] codom, Function<Integer, Integer> f) {
-            return -1; // TO DO
+            
+        boolean es_exhaustiva = true;
+        boolean es_inyectiva = true;
+        
+        //Cream un array de imatges en funció de la mida del codomini, per
+        //poder emprarles per a verificar si la funció es injectiva
+        int cardinal_codom = codom.length;
+        int[] imagen_f = new int[cardinal_codom];
+        int max_cardinal_antiimatge = 0;
+        
+
+        // Verificar exhaustividad
+        // Recorregut de tots el elements de codomini
+        for (int y : codom) {
+            boolean encontrado = false;
+            
+            // Comporbació de si l'element actual del codomini
+            // té antiimatge
+            for (int x : dom) {
+                if (f.apply(x) == y) {
+                    encontrado = true;
+                    break;
+                }
+            }
+            
+            // Si un element del codomini no té antiimatge, la funció no es 
+            // exhaustiva
+            if (!encontrado) {
+                es_exhaustiva = false;
+                break;
+            }
         }
+
+        // Verificar inyectividad
+        for (int x : dom) {
+            int imagen = f.apply(x);
+
+            // Verificam si la imatge ja es troba dins el conjunt d'imatges
+            // del codomini, de manera que si qualque imatge del domini es 
+            // igual a una del codomini, la funció no pot ser injectiva
+            for (int i = 0; i < cardinal_codom; i++) {
+                if (imagen_f[i] == imagen) {
+                    es_inyectiva = false;
+                    break;
+                }
+            }
+
+        // Si ja sabem que es injectiva, sortim de la verificació
+        if (!es_inyectiva) {
+            break;
+        }
+
+        // Almacenar la imagen en el arreglo
+        imagen_f[x] = imagen;
+    }
+
+        // Comprobació si es exhaustiva, injectiva o cap de les dues
+        if (es_exhaustiva) {
+            // Calcular el màxim cardinal de la antiimatge de cada element de codom
+            for (int y : codom) {
+                int cardinal_antiimatge = 0;
+
+                for (int x : dom) {
+                    if (f.apply(x) == y) {
+                        cardinal_antiimatge++;
+                    }
+                }
+
+                max_cardinal_antiimatge = Math.max(max_cardinal_antiimatge, cardinal_antiimatge);
+            }
+            return max_cardinal_antiimatge;
+            
+        } else if (es_inyectiva) {
+            
+            // Calcular el cardinal de la imatge de f menys el cardinal de codom
+            int cardinal_imagen = 0;
+            
+            for (int i = 0; i < cardinal_codom; i++) {
+                if (imagen_f[i] != 0) {
+                    cardinal_imagen++;
+                }
+            }
+            return cardinal_imagen - cardinal_codom;
+        //si no es cap de les dues, retornam 0
+        } else {
+            return 0;
+        }
+    }
 
         /*
      * Aquí teniu alguns exemples i proves relacionades amb aquests exercicis (vegeu `main`)
          */
-//    static void tests() {
-//      // Exercici 1
-//      // `rel` és d'equivalencia?
-//
-//      assertThat(
-//          exercici1(
-//              new int[] { 0, 1, 2, 3 },
-//              new int[][] { {0, 0}, {1, 1}, {2, 2}, {3, 3}, {1, 3}, {3, 1} }
-//          )
-//      );
-//
-//      assertThat(
-//          !exercici1(
-//              new int[] { 0, 1, 2, 3 },
-//              new int[][] { {0, 0}, {1, 1}, {2, 2}, {3, 3}, {1, 2}, {1, 3}, {2, 1}, {3, 1} }
-//          )
-//      );
-//
-//      // Exercici 2
-//      // si `rel` és d'equivalència, quants d'elements té el seu quocient?
-//
-//      final int[] int09 = { 0, 1, 2, 3, 4, 5, 6, 7, 8 };
-//
-//      assertThat(
-//          exercici2(
-//            int09,
-//            generateRel(int09, int09, (x, y) -> x % 3 == y % 3)
-//          )
-//          == 3
-//      );
-//
-//      assertThat(
-//          exercici2(
-//              new int[] { 1, 2, 3 },
-//              new int[][] { {1, 1}, {2, 2} }
-//          )
-//          == -1
-//      );
-//
-//      // Exercici 3
-//      // `rel` és una funció?
-//
-//      final int[] int05 = { 0, 1, 2, 3, 4, 5 };
-//
-//      assertThat(
-//          exercici3(
-//            int05,
-//            int09,
-//            generateRel(int05, int09, (x, y) -> x == y)
-//          )
-//      );
-//
-//      assertThat(
-//          !exercici3(
-//            int05,
-//            int09,
-//            generateRel(int05, int09, (x, y) -> x == y/2)
-//          )
-//      );
-//
-//      // Exercici 4
-//      // el major |f^-1(y)| de cada y de `codom` si f és exhaustiva
-//      // sino, |im f| - |codom| si és injectiva
-//      // sino, 0
-//
-//      assertThat(
-//          exercici4(
-//            int09,
-//            int05,
-//            x -> x / 4
-//          )
-//          == 0
-//      );
-//
-//      assertThat(
-//          exercici4(
-//            int05,
-//            int09,
-//            x -> x + 3
-//          )
-//          == int05.length - int09.length
-//      );
-//
-//      assertThat(
-//          exercici4(
-//            int05,
-//            int05,
-//            x -> (x + 3) % 6
-//          )
-//          == 1
-//      );
-//    }
+    static void tests() {
+      // Exercici 1
+      // `rel` és d'equivalencia?
+
+      assertThat(
+          exercici1(
+              new int[] { 0, 1, 2, 3 },
+              new int[][] { {0, 0}, {1, 1}, {2, 2}, {3, 3}, {1, 3}, {3, 1} }
+          )
+      );
+
+      assertThat(
+          !exercici1(
+              new int[] { 0, 1, 2, 3 },
+              new int[][] { {0, 0}, {1, 1}, {2, 2}, {3, 3}, {1, 2}, {1, 3}, {2, 1}, {3, 1} }
+          )
+      );
+
+      // Exercici 2
+      // si `rel` és d'equivalència, quants d'elements té el seu quocient?
+
+      final int[] int09 = { 0, 1, 2, 3, 4, 5, 6, 7, 8 };
+
+      assertThat(
+          exercici2(
+            int09,
+            generateRel(int09, int09, (x, y) -> x % 3 == y % 3)
+          )
+          == 3
+      );
+
+      assertThat(
+          exercici2(
+              new int[] { 1, 2, 3 },
+              new int[][] { {1, 1}, {2, 2} }
+          )
+          == -1
+      );
+
+      // Exercici 3
+      // `rel` és una funció?
+
+      final int[] int05 = { 0, 1, 2, 3, 4, 5 };
+
+      assertThat(
+          exercici3(
+            int05,
+            int09,
+            generateRel(int05, int09, (x, y) -> x == y)
+          )
+      );
+
+      assertThat(
+          !exercici3(
+            int05,
+            int09,
+            generateRel(int05, int09, (x, y) -> x == y/2)
+          )
+      );
+
+      // Exercici 4
+      // el major |f^-1(y)| de cada y de `codom` si f és exhaustiva
+      // sino, |im f| - |codom| si és injectiva
+      // sino, 0
+
+      assertThat(
+          exercici4(
+            int09,
+            int05,
+            x -> x / 4
+          )
+          == 0
+      );
+
+      assertThat(
+          exercici4(
+            int05,
+            int09,
+            x -> x + 3
+          )
+          == int05.length - int09.length
+      );
+
+      assertThat(
+          exercici4(
+            int05,
+            int05,
+            x -> (x + 3) % 6
+          )
+          == 1
+      );
+    }
         /// Genera un array int[][] amb els elements {a, b} (a de as, b de bs) que satisfàn pred.test(a, b)
         static int[][] generateRel(int[] as, int[] bs, BiPredicate<Integer, Integer> pred) {
             ArrayList<int[]> rel = new ArrayList<>();
@@ -487,23 +619,31 @@ class Entrega {
     static class Tema3 {
 
         /*
-     * Retornau l'ordre menys la mida del graf (no dirigit).
-         */
+        * Retornau l'ordre menys la mida del graf (no dirigit).
+        */
         static int exercici1(int[][] g) {
-            return -1; // TO DO
+            int ordre = g.length;
+            int mida = 0;
+            
+            // Recorregut dels vertexos per calcular la 
+            // mida del graf
+            for(int [] vertexos : g){
+                mida += vertexos.length;
+            }
+            return ordre - mida;
         }
 
         /*
-     * Suposau que el graf (no dirigit) és connex. És bipartit?
+        * Suposau que el graf (no dirigit) és connex. És bipartit?
          */
         static boolean exercici2(int[][] g) {
             return false; // TO DO
         }
 
         /*
-     * Suposau que el graf és un DAG. Retornau el nombre de descendents amb grau de sortida 0 del
-     * vèrtex i-èssim.
-         */
+        * Suposau que el graf és un DAG. Retornau el nombre de descendents amb grau de sortida 0 del
+        * vèrtex i-èssim.
+        */
         static int exercici3(int[][] g, int i) {
             return -1; // TO DO
         }
@@ -519,109 +659,109 @@ class Entrega {
         /*
      * Aquí teniu alguns exemples i proves relacionades amb aquests exercicis (vegeu `main`)
          */
-//    static void tests() {
-//      final int[][] undirectedK6 = {
-//        { 1, 2, 3, 4, 5 },
-//        { 0, 2, 3, 4, 5 },
-//        { 0, 1, 3, 4, 5 },
-//        { 0, 1, 2, 4, 5 },
-//        { 0, 1, 2, 3, 5 },
-//        { 0, 1, 2, 3, 4 },
-//      };
-//
-//      /*
-//         1
-//      4  0  2
-//         3
-//      */
-//      final int[][] undirectedW4 = {
-//        { 1, 2, 3, 4 },
-//        { 0, 2, 4 },
-//        { 0, 1, 3 },
-//        { 0, 2, 4 },
-//        { 0, 1, 3 },
-//      };
-//
-//      // 0, 1, 2 | 3, 4
-//      final int[][] undirectedK23 = {
-//        { 3, 4 },
-//        { 3, 4 },
-//        { 3, 4 },
-//        { 0, 1, 2 },
-//        { 0, 1, 2 },
-//      };
-//
-//      /*
-//             7
-//             0
-//           1   2
-//             3   8
-//             4
-//           5   6
-//      */
-//      final int[][] directedG1 = {
-//        { 1, 2 }, // 0
-//        { 3 },    // 1
-//        { 3, 8 }, // 2
-//        { 4 },    // 3
-//        { 5, 6 }, // 4
-//        {},       // 5
-//        {},       // 6
-//        { 0 },    // 7
-//        {},
-//      };
-//
-//
-//      /*
-//              0
-//         1    2     3
-//            4   5   6
-//           7 8
-//      */
-//
-//      final int[][] directedRTree1 = {
-//        { 1, 2, 3 }, // 0 = r
-//        {},          // 1
-//        { 4, 5 },    // 2
-//        { 6 },       // 3
-//        { 7, 8 },    // 4
-//        {},          // 5
-//        {},          // 6
-//        {},          // 7
-//        {},          // 8
-//      };
-//
-//      /*
-//            0
-//            1
-//         2     3
-//             4   5
-//                6  7
-//      */
-//
-//      final int[][] directedRTree2 = {
-//        { 1 },
-//        { 2, 3 },
-//        {},
-//        { 4, 5 },
-//        {},
-//        { 6, 7 },
-//        {},
-//        {},
-//      };
-//
-//      assertThat(exercici1(undirectedK6) == 6 - 5*6/2);
-//      assertThat(exercici1(undirectedW4) == 5 - 2*4);
-//
-//      assertThat(exercici2(undirectedK23));
-//      assertThat(!exercici2(undirectedK6));
-//
-//      assertThat(exercici3(directedG1, 0) == 3);
-//      assertThat(exercici3(directedRTree1, 2) == 3);
-//
-//      assertThat(exercici4(directedRTree1) == 5);
-//      assertThat(exercici4(directedRTree2) == 4);
-//    }
+    static void tests() {
+      final int[][] undirectedK6 = {
+        { 1, 2, 3, 4, 5 },
+        { 0, 2, 3, 4, 5 },
+        { 0, 1, 3, 4, 5 },
+        { 0, 1, 2, 4, 5 },
+        { 0, 1, 2, 3, 5 },
+        { 0, 1, 2, 3, 4 },
+      };
+
+      /*
+         1
+      4  0  2
+         3
+      */
+      final int[][] undirectedW4 = {
+        { 1, 2, 3, 4 },
+        { 0, 2, 4 },
+        { 0, 1, 3 },
+        { 0, 2, 4 },
+        { 0, 1, 3 },
+      };
+
+      // 0, 1, 2 | 3, 4
+      final int[][] undirectedK23 = {
+        { 3, 4 },
+        { 3, 4 },
+        { 3, 4 },
+        { 0, 1, 2 },
+        { 0, 1, 2 },
+      };
+
+      /*
+             7
+             0
+           1   2
+             3   8
+             4
+           5   6
+      */
+      final int[][] directedG1 = {
+        { 1, 2 }, // 0
+        { 3 },    // 1
+        { 3, 8 }, // 2
+        { 4 },    // 3
+        { 5, 6 }, // 4
+        {},       // 5
+        {},       // 6
+        { 0 },    // 7
+        {},
+      };
+
+
+      /*
+              0
+         1    2     3
+            4   5   6
+           7 8
+      */
+
+      final int[][] directedRTree1 = {
+        { 1, 2, 3 }, // 0 = r
+        {},          // 1
+        { 4, 5 },    // 2
+        { 6 },       // 3
+        { 7, 8 },    // 4
+        {},          // 5
+        {},          // 6
+        {},          // 7
+        {},          // 8
+      };
+
+      /*
+            0
+            1
+         2     3
+             4   5
+                6  7
+      */
+
+      final int[][] directedRTree2 = {
+        { 1 },
+        { 2, 3 },
+        {},
+        { 4, 5 },
+        {},
+        { 6, 7 },
+        {},
+        {},
+      };
+
+      assertThat(exercici1(undirectedK6) == 6 - 5*6/2);
+      assertThat(exercici1(undirectedW4) == 5 - 2*4);
+
+      assertThat(exercici2(undirectedK23));
+      assertThat(!exercici2(undirectedK6));
+
+      assertThat(exercici3(directedG1, 0) == 3);
+      assertThat(exercici3(directedRTree1, 2) == 3);
+
+      assertThat(exercici4(directedRTree1) == 5);
+      assertThat(exercici4(directedRTree2) == 4);
+    }
     }
       static class Tema4 {
     /*
