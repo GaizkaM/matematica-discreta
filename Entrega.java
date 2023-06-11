@@ -32,7 +32,7 @@ import java.util.List;
  *
  * Podeu fer aquesta entrega en grups de com a màxim 3 persones, i necessitareu com a minim Java 8.
  * Per entregar, posau a continuació els vostres noms i entregau únicament aquest fitxer.
- * - Nom 1:
+ * - Nom 1: Gaizka Medina Gordo
  * - Nom 2:
  * - Nom 3:
  *
@@ -62,22 +62,37 @@ class Entrega {
      * És cert que ∀x ∃!y. P(x) -> Q(x,y) ?
          */
         static boolean exercici1(int[] universe, Predicate<Integer> p, BiPredicate<Integer, Integer> q) {
-
+            
+            // Bucle per a tot x dins l'uivers
             for (int x : universe) {
-                boolean Unico = false;
+                // Variable unic que comprova si la condició es comnpleix
+                //domés una vegada
+                boolean unic = false;
+                // Bucle que passa per tot y dins l'univers
                 for (int y : universe) {
-                    if (p.test(x) && q.test(x, y)) {
-                        if (Unico) {
-                            return false; // S'ha trobat més d'un y que satisfà la condició
+                    // Comprovació de si P(x) -> Q(x,y) es compleix amb la 
+                    //seva negació
+                    if (!( p.test(x) && !(q.test(x, y)))) {
+                        // Comprovació de si P(x) -> Q(x,y) és únic
+                        if (unic) {
+                            // S'ha trobat més d'un y que satisfà la condició
+                            return false; 
                         }
-                        Unico = true;
+                        // Asignam unic a vertader per saber que aquesta condició
+                        //ja s'ha acomplit i que no pot tornar a sortir
+                        unic = true;
                     }
                 }
-                if (p.test(x) && !Unico) {
-                    return false; // No s'ha trobat cap y que satisfà la condició
+                // Comprovam si ha hagut qualque P(x) que s'ha acomplit i que 
+                //no és únic, això vol dir que existeix un x sense cap y que 
+                //satisfà la condició
+                if (p.test(x) && !unic) {
+                    // No s'ha trobat cap y que satisfà la condició
+                    return false; 
                 }
             }
-            return true; // Per a tot x, hi ha exactament un y que satisfà la condició
+            // Per a tot x, hi ha exactament un y que satisfà P(x) -> Q(x,y)
+            return true; 
         }
 
         /*
@@ -85,23 +100,37 @@ class Entrega {
          */
         static boolean exercici2(int[] universe, Predicate<Integer> p, BiPredicate<Integer, Integer> q) {
 
+            // Bucle per a tot y dins l'univers
             for (int y : universe) {
-                boolean Unico = false;
+                // Variable unic que comprova si la condició es comnpleix
+                //domés una vegada
+                boolean unic = false;
+                // Bucle per a tot x dins l'uivers
                 for (int x : universe) {
-                    if (p.test(y) && q.test(x, y)) {
-                        if (Unico) {
-                            return false; // Se ha encontrado más de un X que satiface la 
-                            //condición
+                    // Comprovació de si P(y) -> Q(x,y) es compleix amb la 
+                    //seva negació
+                    if (!(p.test(y) && !(q.test(x, y)))) {
+                        // Comprovació de si P(y) -> Q(x,y) és únic
+                        if (unic) {
+                            // S'ha trobat més d'un y que satisfà la condició
+                            return false;                             
                         }
-                        Unico = true;
+                        // Asignam unic a vertader per saber que aquesta condició
+                        //ja s'ha acomplit i que no pot tornar a sortir
+                        unic = true;
                     }
                 }
-                if (p.test(y) && !Unico) {
-                    return false; // No se ha encontrado ningún Y que cumpla la condición
+                // Comprovam si ha hagut qualque P(y) que s'ha acomplit i que 
+                //no és únic, això vol dir que existeix un y sense cap x que 
+                //satisfà la condició
+                if (p.test(y) && !unic) {
+                    // No s'ha trobat cap x que satisfà la condició
+                    return false; 
                 }
             }
-            return true; // Recorriendo todo Y, solo se ha encontrado un Y que cumpla
-            //la condición
+            // Hi ha exactament un x que per a tot y satisfà P(y) -> Q(x,y)
+            return true; 
+           
         }
 
         /*
@@ -109,34 +138,72 @@ class Entrega {
          */
         static boolean exercici3(int[] universe, BiPredicate<Integer, Integer> p, BiPredicate<Integer, Integer> q) {
 
+            // Variable existeixXY que comprova si la condició es compleix 
+            //com a mínim una vegada dins x i y
+            boolean existeixXY=false;
+            // Bucle per a tot x dins l'univers
             for (int x : universe) {
+                // Bucle per a tot y dins l'univers
                 for (int y : universe) {
+                    // Variable booleana totZ que comprova que la condició
+                    //es compleix per a tots el elements de z
+                    boolean totZ = true;
+                    // Bucle per a tot z dins l'univers
                     for (int z : universe) {
-                        //
-                        if (!(p.test(x, z)) || (q.test(y, z))
-                                && ((p.test(x, z)) || (q.test(y, z)))) {
-                            
-                            return false;   //Si la negación de la condición original se cumple, eso significa
-                                            //que la condición es falsa
-                                            
+                        // Comprovació de si la condició P(x,z) ⊕ Q(y,z) no es
+                        //compleix
+                        if ((p.test(x, z) && q.test(y, z))
+                            ||  (!(p.test(x, z)) && !(q.test(y, z)))) {
+                            // Si la condició es compleix, vol dir que la condició 
+                            //P(x,z) ⊕ Q(y,z) no es compleix per a tot z
+                            totZ= false;
+                            return false;
+                        // Comprovació de que la condició es compleix almenys
+                        //una vegada
+                        }else if ((!(p.test(x, z)) && q.test(y, z))
+                            ||  (p.test(x, z) && !(q.test(y, z)))){
+                            existeixXY=true;
                         }
-                    }
-                    
+                    } 
                 }
             }
+            // La condició no es compleix cap vegada
+            if (!existeixXY){
+                return false;
+            // La condició P(x,z) ⊕ Q(y,z) existeix dins x i y per a tot z
+            }else{
             return true;
+            }
         }
 
         /*
      * És cert que (∀x. P(x)) -> (∀x. Q(x)) ?
          */
         static boolean exercici4(int[] universe, Predicate<Integer> p, Predicate<Integer> q) {
+            // Variable booleana esVaertadera que comprova si la condició es
+            //compleix
+            boolean esVertadera=false;
+            // Bucle per a tot x dins l'univers
             for (int x:universe){
-                if ((p.test(x))&& !(q.test(x))){
-                    return false;
+                // Si P(x) es falsa, la condició P(x) -> Q(x) es vertadera sempre
+                if (!(p.test(x))){
+                    esVertadera=true;
+                    }else{
+                    // Si P(x) i Q(x) son vertaders, la condició es compleix
+                    if (q.test(x)){
+                        esVertadera=true;
+                    // Si P(x) es vertadera i Q(x) falsa, la condició no es compleix
+                    }else{
+                        esVertadera=false;
                     }
                 }
-            return true;
+                if (!esVertadera){
+                return false;
+                }
+            }
+            // Si hem sortit del bucle sense cap condició falsa, la condició es
+            //compleix per a tot x
+            return true;    
         }
 
         /*
@@ -245,46 +312,73 @@ class Entrega {
      * Podeu soposar que `a` està ordenat de menor a major.
          */
         static boolean exercici1(int[] a, int[][] rel) {
+            
+            // Bucle recorregut de tots els elements de a
             for(int x: a){
-                boolean es_reflexiva=false;
-                boolean es_simetrica=false;
-                boolean es_transitiva=true;
+                // Variables booleanes per comprovar si el conjunt té relació
+                //reflexiva, simetrica i transitiva
+                boolean es_reflexiu=false;
+                boolean es_simetric=false;
+                boolean es_transitiu=true;
                 
-                for(int[] parejaA : rel){
-                    if ((parejaA[0] == x) 
-                        && (parejaA[1]== x)){
-                        es_reflexiva= true;
+                // Recorregut de cada parella dins rel 
+                for(int[] parellaA : rel){
+                    // Comprovació de que la parella és reflexiva ( a R a)
+                    if ((parellaA[0] == x) 
+                        && (parellaA[1]== x)){
+                        es_reflexiu= true;
                     }
-                    if(parejaA[0] == x){
-                        for(int [] parejaB :rel){
-                            if (parejaB[0]==parejaA[1] && parejaB[1]==x){
-                                es_simetrica=true;
+                    // Comprovació de que la parella és simètrica (si per a tot
+                    //a i b, a R b -> b R a
+                    if(parellaA[0] == x){
+                        // Segon recorregut per a trobar la relació
+                        for(int [] parellaB :rel){
+                            // Comprovació de a R b -> b R a
+                            if (parellaB[0]==parellaA[1] && parellaB[1]==x){
+                                es_simetric=true;
                                 break;
                             }
                         }
-                    if(!es_simetrica){
-                        return false;
-                    }
-                }
-                for (int[] parejaB:rel){
-                    if((parejaA[1]==parejaB[0])&&(parejaA[0]!=parejaB[1])){
-                        boolean condicion_trans=false;
-                        for(int[]parejaC:rel){
-                            if((parejaC[0]==parejaA[0])&&(parejaC[1]==parejaB[1])){
-                            condicion_trans=true;
-                            break;
-                        }
-                        }
-                        if(!condicion_trans){
-                            es_transitiva=false;
+                        // Si hi ha una parella que no es simètrica, el conjunt no és
+                        //simètric i per tant no és d'equivalència
+                        if(!es_simetric){
+                            return false;
                         }
                     }
+                    // Comprovació de que la parella és transitiva (si per a tot
+                    //a, b i c es compleix a R b & b R c -> a R c
+                    //Segon recorregut
+                    for (int[] parellaB:rel){
+                        // Comprovació de a R b & b R c
+                        if((parellaA[1]==parellaB[0])&&(parellaA[0]!=parellaB[1])){
+                            // Variable booleana que ens comprova si la condició 
+                            //es compleix per no fer recorreguts innecesaris
+                            boolean condicio_trans=false;
+                            // Tercer recorreut
+                            for(int[]parellaC:rel){
+                                // Comprovació de a R c
+                                if((parellaC[0]==parellaA[0])&&(parellaC[1]==parellaB[1])){
+                                // La condició es compleix
+                                condicio_trans=true;
+                                break;
+                                }
+                            }
+                            // Si la condició no es compleix, el conjunt no és
+                            //transitiu
+                            if(!condicio_trans){
+                                es_transitiu=false;
+                            }
+                        }
+                    }
                 }
-                }
-                if(!es_reflexiva && !es_simetrica && !es_transitiva){
+                // Comprovació de que l'element actual es d'equivalència 
+                //(reflexiu, simetric i transitiu)
+                if(!es_reflexiu && !es_simetric && !es_transitiu){
                     return false;
                 }
             }
+            // Si després de totes les condicions no ha donat fals, vol dir que 
+            //el conjunt és d'equivalència
             return true;
         }
 
@@ -296,57 +390,85 @@ class Entrega {
          */
         static int exercici2(int[] a, int[][] rel) {
             
-            int cardinalConjuntoCociente = a.length + rel.length;
+            // Variable cardinalConjuntQuocient que emprarem per retornar-la si
+            //la condició es compleix
+            int cardinalConjuntQuocient = a.length + rel.length;
                     
             for(int x: a){
+                // Variables booleanes per comprovar si el conjunt té relació
+                //reflexiva, simetrica i transitiva
                 boolean es_reflexiva=false;
                 boolean es_simetrica=false;
                 boolean es_transitiva=true;
                 
-                for(int[] parejaA : rel){
-                    if ((parejaA[0] == x) 
-                        && (parejaA[1]== x)){
+                // Recorregut de cada parella dins rel
+                for(int[] parellaA : rel){
+                    // Comprovació de que la parella és reflexiva ( a R a)
+                    if ((parellaA[0] == x) 
+                        && (parellaA[1]== x)){
                         es_reflexiva= true;
                     }
-                    if(parejaA[0] == x){
-                        for(int [] parejaB :rel){
-                            if (parejaB[0]==parejaA[1] && parejaB[1]==x){
+                    // Comprovació de que la parella és simètrica (si per a tot
+                    //a i b, a R b -> b R a
+                    if(parellaA[0] == x){
+                        // Segon recorregut per a trobar la relació
+                        for(int [] parellaB :rel){
+                            // Comprovació de a R b -> b R a
+                            if (parellaB[0]==parellaA[1] && parellaB[1]==x){
                                 es_simetrica=true;
                                 break;
                             }
                         }
-                    if(!es_simetrica){
-                        return -1;
-                    }
-                }
-                for (int[] parejaB:rel){
-                    if((parejaA[1]==parejaB[0])&&(parejaA[0]!=parejaB[1])){
-                        boolean condicion_trans=false;
-                        for(int[]parejaC:rel){
-                            if((parejaC[0]==parejaA[0])&&(parejaC[1]==parejaB[1])){
-                            condicion_trans=true;
-                            break;
-                        }
-                        }
-                        if(!condicion_trans){
-                            es_transitiva=false;
+                        // Si hi ha una parella que no es simètrica, el conjunt no és
+                        //simètric i per tant no és d'equivalència
+                        if(!es_simetrica){
+                            return -1;
                         }
                     }
+                    // Comprovació de que la parella és transitiva (si per a tot
+                    //a, b i c es compleix a R b & b R c -> a R c
+                    //Segon recorregut
+                    for (int[] parellaB:rel){
+                        // Comprovació de a R b & b R c
+                        if((parellaA[1]==parellaB[0])&&(parellaA[0]!=parellaB[1])){
+                            // Variable booleana que ens comprova si la condició 
+                            //es compleix per no fer recorreguts innecesaris
+                            boolean condicion_trans=false;
+                            // Tercer recorreut
+                            for(int[]parellaC:rel){
+                                // Comprovació de a R c
+                                if((parellaC[0]==parellaA[0])&&(parellaC[1]==parellaB[1])){
+                                    // La condició es compleix
+                                    condicion_trans=true;
+                                    break;
+                                }
+                            }
+                            // Si la condició no es compleix, el conjunt no és
+                            //transitiu
+                            if(!condicion_trans){
+                                es_transitiva=false;
+                            }
+                        }
+                    }
                 }
-                }
+                // Comprovació de que l'element actual es d'equivalència 
+                //(reflexiu, simetric i transitiu)
                 if(!es_reflexiva && !es_simetrica && !es_transitiva){
                     return -1;
                 }
             }
-            //cardinal del conjunto cociente de a y rel
-            // Calcular el cardinal del conjunto cociente
+            // Calculam el cardinal del conjunt quocient de a i rel
             for (int[] pareja : rel) {
+                // Condició de si la parella es reflexiva (a R a)
                 if (pareja[0] == pareja[1]) {
-                    cardinalConjuntoCociente--; // Restar las parejas reflexivas
+                    // Li restam la parella reflexiva
+                    cardinalConjuntQuocient--; 
                 }   
             }
-    
-            return cardinalConjuntoCociente;
+            // Si després de totes les condicions no ha donat fals, vol dir que 
+            //el conjunt és d'equivalència i per tant retornam el cardinal del
+            //quocient de a sobre rel calculat abans
+            return cardinalConjuntQuocient;
         }
 
     /*
