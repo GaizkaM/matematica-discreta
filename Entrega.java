@@ -1105,7 +1105,22 @@ static int maxDistance(int[] distances) {
      * Si no en té, retornau null.
      */
     static int[] exercici2a(int[] b, int[] n) {
-      return null; // TO DO
+        
+    int[] solucion = exercici1(b[0], b[1], n[0]); // Resuelve la primera ecuación
+
+    for (int i = 2; i < b.length; i++) {
+        solucion = exercici1(solution[0], b[i], n[i]);  // Resuelve las ecuaciones restantes
+
+        if (solution == null) {
+            return null;    // Si no hay solución, retorna null
+        }
+    }
+
+    return solution;     // Retorna la solución del sistema de ecuaciones
+}   
+        
+        
+      return null; 
     }
 
     /*
@@ -1120,10 +1135,23 @@ static int maxDistance(int[] distances) {
      * podeu suposar que els tres arrays tenen la mateixa longitud.
      *
      * Si la solució és de la forma x ≡ c (mod m), retornau `new int[] { c, m }`, amb 0 ⩽ c < m.
-     * Si no en té, retornau null.
+     * Si no en té, retornau null
      */
     static int[] exercici2b(int[] a, int[] b, int[] n) {
-      return null; // TO DO
+          
+        
+    int[] equation = new int[] { a[0], b[0] };  // Inicializa la primera ecuación con el primer par (a[0], b[0])
+
+    for (int i = 1; i < a.length; i++) {
+        equation = combineEquations(equation, new int[] { a[i], b[i] }, n[i]);  // Combina la ecuación actual con la ecuación anterior
+
+        if (equation == null) {
+            return null;  // Si no hay solución, retorna null
+        }
+    }
+
+    return equation;  // Retorna la solución del sistema de ecuaciones
+}
     }
 
     /*
