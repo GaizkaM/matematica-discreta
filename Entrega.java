@@ -533,11 +533,11 @@ class Entrega {
         //Cream un array de imatges en funció de la mida del codomini, per
         //poder emprarles per a verificar si la funció es injectiva
         int cardinal_codom = codom.length;
-        int[] imagen_f = new int[cardinal_codom];
+        int[] imatge_f = new int[cardinal_codom];
         int max_cardinal_antiimatge = 0;
         
 
-        // Verificar exhaustividad
+        // Verificam exhaustivitat
         // Recorregut de tots el elements de codomini
         for (int y : codom) {
             boolean encontrado = false;
@@ -552,67 +552,75 @@ class Entrega {
             }
             
             // Si un element del codomini no té antiimatge, la funció no es 
-            // exhaustiva
+            //exhaustiva
             if (!encontrado) {
                 es_exhaustiva = false;
                 break;
             }
         }
 
-        // Verificar inyectividad
+        // Verificam injectivitat
         for (int x : dom) {
             int imagen = f.apply(x);
 
             // Verificam si la imatge ja es troba dins el conjunt d'imatges
-            // del codomini, de manera que si qualque imatge del domini es 
-            // igual a una del codomini, la funció no pot ser injectiva
+            //del codomini, de manera que si qualque imatge del domini es 
+            //igual a una del codomini, la funció no pot ser injectiva
             for (int i = 0; i < cardinal_codom; i++) {
-                if (imagen_f[i] == imagen) {
+                if (imatge_f[i] == imagen) {
                     es_inyectiva = false;
                     break;
                 }
             }
 
-        // Si ja sabem que es injectiva, sortim de la verificació
+        // Si ja sabem que no es injectiva, sortim de la verificació
         if (!es_inyectiva) {
             break;
         }
 
-        // Almacenar la imagen en el arreglo
-        imagen_f[x] = imagen;
+        // Almacenam la imatge en l'array
+        imatge_f[x] = imagen;
     }
 
-        // Comprobació si es exhaustiva, injectiva o cap de les dues
+        // Comprobam si es exhaustiva, injectiva o cap de les dues
         if (es_exhaustiva) {
-            // Calcular el màxim cardinal de la antiimatge de cada element de codom
+            // Calculam el màxim cardinal de la antiimatge de cada element de codom
             for (int y : codom) {
                 int cardinal_antiimatge = 0;
-
+                // Per a cada element del codomini amb antiimatge, aumengtam el
+                //contador de antiimatges
                 for (int x : dom) {
                     if (f.apply(x) == y) {
                         cardinal_antiimatge++;
                     }
                 }
-
-                max_cardinal_antiimatge = Math.max(max_cardinal_antiimatge, cardinal_antiimatge);
+                // Calculam el màxim cardinal de l'antiimatge amb la funció max 
+                //de la classe Math
+                max_cardinal_antiimatge = Math.max(max_cardinal_antiimatge, 
+                                                   cardinal_antiimatge);
             }
+            // Retornam el màxim cardinal
             return max_cardinal_antiimatge;
-            
+   
         } else if (es_inyectiva) {
             
-            // Calcular el cardinal de la imatge de f menys el cardinal de codom
-            int cardinal_imagen = 0;
+            // Variable cardinal imatge inicialitzada a 0
+            int cardinal_imatge = 0;
             
+            // Recorregut de tots els cardinals de codom
             for (int i = 0; i < cardinal_codom; i++) {
-                if (imagen_f[i] != 0) {
-                    cardinal_imagen++;
+                // Si la imatge de l'element actual es diferent de 0, la imatge 
+                //té cardinal
+                if (imatge_f[i] != 0) {
+                    cardinal_imatge++;
                 }
             }
-            return cardinal_imagen - cardinal_codom;
+            // Calculam el cardinal de la imatge de f menys el cardinal de codom
+            return cardinal_imatge - cardinal_codom;
         //si no es cap de les dues, retornam 0
         } else {
             return 0;
-        }
+        }    
     }
 
         /*
@@ -744,6 +752,8 @@ class Entrega {
         * Retornau l'ordre menys la mida del graf (no dirigit).
         */
         static int exercici1(int[][] g) {
+            // Variables ordre que és igual a la longitud del array referent
+            //als vértexos
             int ordre = g.length;
             int mida = 0;
             
@@ -751,6 +761,7 @@ class Entrega {
             for(int [] vertexos : g){
                 mida += vertexos.length;
             }
+            // Retornam l'ordre menys la mida del graf
             return ordre - mida;
         }
 
@@ -783,7 +794,7 @@ class Entrega {
                 // Vertex actual a comprovar
                 int vertex1 = cua[start++];
 
-                // Variable grup_actual que guarda el valor del grupo del 
+                // Variable grup_actual que guarda el valor del grup del 
                 //vertex1
                 int grup_actual = visitats[vertex1];
 
@@ -798,7 +809,7 @@ class Entrega {
                         
                         // Assignam el segon grup al vertex veí
                         visitats[vertex2] = 1 - grup_actual;
-                        //Guardam el valor del vartex veí dins cua
+                        // Guardam el valor del vartex veí dins cua
                         cua[end++] = vertex2;
                         
                     // El grup del veí correspon amb el grup del vertex, això 
@@ -857,86 +868,110 @@ class Entrega {
      * Donat un arbre arrelat (dirigit, suposau que l'arrel es el vèrtex 0), trobau-ne el diàmetre.
      * Suposau que totes les arestes tenen pes 1.
          */
-static int exercici4(int[][] g) {
-    int n = g.length;
-    int root = 0; // Suponiendo que el vértice raíz es el vértice 0
-    
-    // Paso 1: Ejecutar el algoritmo de Dijkstra desde el vértice raíz
-    int[] desdeArrel = dijkstra(g, root);
-    
-    // Paso 2: Encontrar el vértice más lejano desde la raíz
-    int farthestVertex = trobarVertexMaxDistancia(desdeArrel);
-    
-    // Paso 3: Ejecutar el algoritmo de Dijkstra desde el vértice más lejano
-    int[] distancesFromFarthest = dijkstra(g, farthestVertex);
-    
-    // Paso 4: Encontrar la distancia máxima entre la raíz y cualquier otro vértice
-    int diameter = maxDistance(distancesFromFarthest);
-    
-    return diameter;
-}
-
-static int[] dijkstra(int[][] g, int source) {
-    int n = g.length;
-    int[] distances = new int[n];
-    Arrays.fill(distances, Integer.MAX_VALUE);
-    
-    boolean[] visited = new boolean[n];
-    distances[source] = 0;
-    
-    for (int i = 0; i < n - 1; i++) {
-        int minDistance = Integer.MAX_VALUE;
-        int minVertex = -1;
+    static int exercici4(int[][] g) {
         
-        // Encontrar el vértice no visitado con la distancia mínima actual
-        for (int j = 0; j < n; j++) {
-            if (!visited[j] && distances[j] < minDistance) {
-                minDistance = distances[j];
-                minVertex = j;
+        // Variable arrel que representa el vèrtex 0
+        int arrel = 0; 
+
+        // Empram l'algorisme de Dijsktra per trobar 
+        int[] desdArrel = dijkstra(g, arrel);
+
+        // Cercam el vèrtex amb la mayor distància des de l'arrel
+        int vertexmaxdistancia = trobarVertexMaxDistancia(desdArrel);
+
+        // Empram l'alogisme de Dijkstra amb el vèrtex amb major distància per 
+        //trobar la majora distància de totes
+        int[] distanciamesenfora = dijkstra(g, vertexmaxdistancia);
+
+        // Cercam la distància màxima entre l'arrel i qualsevol altre vèrtex.
+        //Aquesta distància màxima serà el diàmetre del nostre graf
+        int diametre = maxDistancia(distanciamesenfora);
+
+        //Retornam el diàmetre del graf
+        return diametre;
+    }
+
+    // Mètode dijkstra que implementa l'algorisme de Dijkstra a un graf i un vèrtex
+    //declarats per paràmetre. El mètode retornara la distància de pes mínim del
+    //vertex declarat dins el graf g
+    static int[] dijkstra(int[][] g, int vertex) {
+        
+        int n = g.length;
+        // Array distancies on anirem guardant el valor de les distàncies entre 
+        //els vèrtexos
+        int[] distancies = new int[n];
+        Arrays.fill(distancies, Integer.MAX_VALUE);
+
+        // Booleà visitat que emprarem per verificar si ja hem visitat el vèrtex
+        boolean[] visitat = new boolean[n];
+        distancies[vertex] = 0;
+
+        for (int i = 0; i < n - 1; i++) {
+            int minDistancia = Integer.MAX_VALUE;
+            int minVertex = -1;
+
+            // Recorregut per trobar el vèrtex no visitat amb la distància mínima
+            for (int j = 0; j < n; j++) {
+                if (!visitat[j] && distancies[j] < minDistancia) {
+                    minDistancia = distancies[j];
+                    minVertex = j;
+                }
+            }
+            // Condició que surt del recorregut si hi ha vèrtexos que no es poden
+            //arribar a ells
+            if (minVertex == -1) {
+                break; 
+            }
+
+            visitat[minVertex] = true;
+
+            // Actualizar las distancias de los vértices adyacentes no visitados
+            // Actualitzam les distancies dels vèrtexos adjancents no visitats
+            for (int adjVertex : g[minVertex]) {
+                // Si no ha estat visitat
+                if (!visitat[adjVertex]) {
+                    // Sumam 1 ja que es la distància entre vèrtexos a un arbre
+                    int newDistance = distancies[minVertex] + 1; 
+                    distancies[adjVertex] = Math.min(distancies[adjVertex], newDistance);
+                }
             }
         }
-        
-        if (minVertex == -1) {
-            break; // Todos los vértices restantes son inalcanzables
-        }
-        
-        visited[minVertex] = true;
-        
-        // Actualizar las distancias de los vértices adyacentes no visitados
-        for (int adjVertex : g[minVertex]) {
-            if (!visited[adjVertex]) {
-                int newDistance = distances[minVertex] + 1; // Distancia entre vértices adyacentes es 1 en un árbol
-                distances[adjVertex] = Math.min(distances[adjVertex], newDistance);
+        // El mètode retorna la distància mínima del vèrtex i el graf introduits
+        //per paràmetre
+        return distancies;
+    }
+
+    // Mètode trobarVertexMaxDistancia que ens retorna el vertex amb la major 
+    //distància des del valor declarat per paràmetre
+    static int trobarVertexMaxDistancia(int[] distancies) {
+        int vertexMaxDis = 0;
+        int maxDis = 0;
+
+        // Recorregut del array distancies per trobar el vertex amb màxima distància
+        for (int i = 0; i < distancies.length; i++) {
+            // Comprovació de quin es el vèrtex amb la màxima distància
+            if (distancies[i] > maxDis) {
+                maxDis = distancies[i];
+                vertexMaxDis = i;
             }
         }
-    }
-    
-    return distances;
-}
 
-static int trobarVertexMaxDistancia(int[] distances) {
-    int vertexMaxDis = 0;
-    int maxDis = 0;
-    
-    for (int i = 0; i < distances.length; i++) {
-        if (distances[i] > maxDis) {
-            maxDis = distances[i];
-            vertexMaxDis = i;
+        // Retorna el vèrtex 
+        return vertexMaxDis;
+    }
+
+    // Mètode maxDistancia per trobar la màxima distancia del graf
+    static int maxDistancia(int[] distancies) {
+        int maxDistancia = 0;
+
+        // Recorregut per trobar la màxima distancia
+        for (int distancia : distancies) {
+            maxDistancia = Math.max(maxDistancia, distancia);
         }
-    }
-    
-    return vertexMaxDis;
-}
 
-static int maxDistance(int[] distances) {
-    int maxDistance = 0;
-    
-    for (int distance : distances) {
-        maxDistance = Math.max(maxDistance, distance);
+        // Retornam la màxima distància
+        return maxDistancia;
     }
-    
-    return maxDistance;
-}
 
         /*
      * Aquí teniu alguns exemples i proves relacionades amb aquests exercicis (vegeu `main`)
