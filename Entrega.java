@@ -33,7 +33,7 @@ import java.util.List;
  * Podeu fer aquesta entrega en grups de com a màxim 3 persones, i necessitareu com a minim Java 8.
  * Per entregar, posau a continuació els vostres noms i entregau únicament aquest fitxer.
  * - Nom 1: Gaizka Medina Gordo
- * - Nom 2:
+ * - Nom 2: David Gavilla Hernández
  * - Nom 3:
  *
  * L'entrega es farà a través d'una tasca a l'Aula Digital que obrirem abans de la data que se us
@@ -180,6 +180,7 @@ class Entrega {
      * És cert que (∀x. P(x)) -> (∀x. Q(x)) ?
          */
         static boolean exercici4(int[] universe, Predicate<Integer> p, Predicate<Integer> q) {
+            
             // Variable booleana esVaertadera que comprova si la condició es
             //compleix
             boolean esVertadera=false;
@@ -209,83 +210,83 @@ class Entrega {
         /*
      * Aquí teniu alguns exemples i proves relacionades amb aquests exercicis (vegeu `main`)
          */
-//    static void tests() {
-//      // Exercici 1
-//      // ∀x ∃!y. P(x) -> Q(x,y) ?
-//
-////      assertThat(
-////          exercici1(
-////              new int[] { 2, 3, 5, 6 },
-////              x -> x != 4,
-////              (x, y) -> x == y
-////          )
-////      );
-////
-////      assertThat(
-////          !exercici1(
-////              new int[] { -2, -1, 0, 1, 2, 3 },
-////              x -> x != 0,
-////              (x, y) -> x * y == 1
-////          )
-////      );
-////
-////      // Exercici 2
-////      // ∃!x ∀y. P(y) -> Q(x,y) ?
-////
-////      assertThat(
-////          exercici2(
-////              new int[] { -1, 1, 2, 3, 4 },
-////              y -> y <= 0,
-////              (x, y) -> x == -y
-////          )
-////      );
-////
-////      assertThat(
-////          !exercici2(
-////              new int[] { -2, -1, 1, 2, 3, 4 },
-////              y -> y < 0,
-////              (x, y) -> x * y == 1
-////          )
-////      );
-//
-//      // Exercici 3
-//      // ∃x,y ∀z. P(x,z) ⊕ Q(y,z) ?
-//
-//      assertThat(
-//          exercici3(
-//              new int[] { 2, 3, 4, 5, 6, 7, 8 },
-//              (x, z) -> z % x == 0,
-//              (y, z) -> z % y == 1
-//          )
-//      );
-//
-//      assertThat(
-//          !exercici3(
-//              new int[] { 2, 3 },
-//              (x, z) -> z % x == 1,
-//              (y, z) -> z % y == 1
-//          )
-//      );
-//
-//      // Exercici 4
-//      // (∀x. P(x)) -> (∀x. Q(x)) ?
-//
-//      assertThat(
-//          exercici4(
-//              new int[] { 0, 1, 2, 3, 4, 5, 8, 9, 16 },
-//              x -> x % 2 == 0, // x és múltiple de 2
-//              x -> x % 4 == 0 // x és múltiple de 4
-//          )
-//      );
-//
-//      assertThat(
-//          !exercici4(
-//              new int[] { 0, 2, 4, 6, 8, 16 },
-//              x -> x % 2 == 0, // x és múltiple de 2
-//              x -> x % 4 == 0 // x és múltiple de 4
-//          )
-//      );
-//    }
+    static void tests() {
+      // Exercici 1
+      // ∀x ∃!y. P(x) -> Q(x,y) ?
+
+      assertThat(
+          exercici1(
+              new int[] { 2, 3, 5, 6 },
+              x -> x != 4,
+              (x, y) -> x == y
+          )
+      );
+
+      assertThat(
+          !exercici1(
+              new int[] { -2, -1, 0, 1, 2, 3 },
+              x -> x != 0,
+              (x, y) -> x * y == 1
+          )
+      );
+
+      // Exercici 2
+      // ∃!x ∀y. P(y) -> Q(x,y) ?
+
+      assertThat(
+          exercici2(
+              new int[] { -1, 1, 2, 3, 4 },
+              y -> y <= 0,
+              (x, y) -> x == -y
+          )
+      );
+
+      assertThat(
+          !exercici2(
+              new int[] { -2, -1, 1, 2, 3, 4 },
+              y -> y < 0,
+              (x, y) -> x * y == 1
+          )
+      );
+
+      // Exercici 3
+      // ∃x,y ∀z. P(x,z) ⊕ Q(y,z) ?
+
+      assertThat(
+          exercici3(
+              new int[] { 2, 3, 4, 5, 6, 7, 8 },
+              (x, z) -> z % x == 0,
+              (y, z) -> z % y == 1
+          )
+      );
+
+      assertThat(
+          !exercici3(
+              new int[] { 2, 3 },
+              (x, z) -> z % x == 1,
+              (y, z) -> z % y == 1
+          )
+      );
+
+      // Exercici 4
+      // (∀x. P(x)) -> (∀x. Q(x)) ?
+
+      assertThat(
+          exercici4(
+              new int[] { 0, 1, 2, 3, 4, 5, 8, 9, 16 },
+              x -> x % 2 == 0, // x és múltiple de 2
+              x -> x % 4 == 0 // x és múltiple de 4
+          )
+      );
+
+      assertThat(
+          !exercici4(
+              new int[] { 0, 2, 4, 6, 8, 16 },
+              x -> x % 2 == 0, // x és múltiple de 2
+              x -> x % 4 == 0 // x és múltiple de 4
+          )
+      );
+    }
     }
 
     /*
@@ -1093,38 +1094,39 @@ class Entrega {
      */
     static int[] exercici1(int a, int b, int n) {
         
-    if (b == 0) {
-        if (a % n == 0) {
-            return new int[] { 0, n };
-        } else {
+        // Comprovam si b es igual a 0
+        if (b == 0) {
+            // Si a és divisible amb n, retornam c=0 i m=n
+            //Si no és divisible, l'equaicó no té solució
+            if (a % n == 0) {
+                return new int[] { 0, n };
+            } else {
+                return null;
+            }
+        }
+        // Calculam el màxim comú divisor de a i n
+        int mcd = mcd(Math.abs(a), n);
+        // Si b no és divisble amb mcd, l'equació no té solució
+        if (b % mcd != 0) {
             return null;
+        } else {
+            // Calculam m com n dividit amb el mcd
+            int m = n / mcd;
+            // Calculam c com el residu de b/mcd i mcd més m i l'ajustam
+            //per a que doni un nombre entre 0 i m
+            int c = ((Math.abs(b) / mcd) % m + m) % m;
+
+            if (a < 0) {
+                // Si a es negativa, hem d'ajustar c per a que doni un nombre
+                //entre 0 i m
+                c = m - c; 
+            }
+
+            // Retornam c i m
+            return new int[] { c, m };
         }
     }
 
-    int mcd = mcd(Math.abs(a), n);
-
-    if (b % mcd != 0) {
-        return null;
-    } else {
-        int m = n / mcd;
-        int c = ((Math.abs(b) / mcd) % m + m) % m;
-
-        if (a < 0) {
-            c = m - c; // Ajuste para manejar valores negativos de 'a'
-        }
-
-        return new int[] { c, m };
-    }
-      }
-
-    
-    static int mcd(int a, int b) {
-    if (b == 0) {
-        return a;
-    } else {
-        return mcd(b, a % b);
-    }
-}
     /*
      * Donau la solució (totes) del sistema d'equacions
      *
@@ -1139,24 +1141,33 @@ class Entrega {
      * Si la solució és de la forma x ≡ c (mod m), retornau `new int[] { c, m }`, amb 0 ⩽ c < m.
      * Si no en té, retornau null.
      */
-    static int[] exercici2a(int[] b, int[] n) {
-        
-    int[] solucion = exercici1(b[0], b[1], n[0]); // Resuelve la primera ecuación
+        static int[] exercici2a(int[] b, int[] n) {
+            
+            int length = b.length;
+            // Inicialitzam la solució amb x ≡ 0 (mod 1)
+            int[] solucio = new int[] {0, 1}; 
 
-    for (int i = 2; i < b.length; i++) {
-        solucion = exercici1(solution[0], b[i], n[i]);  // Resuelve las ecuaciones restantes
+            // Recorregut on resolvem, emprant el teorema xinès del residu, cada
+            //una de les equacions congruents en funció de i
+            for (int i = 0; i < length; i++) {
+                // Calculam el residu i el modul actuals
+                int residu = b[i] % n[i];
+                int modul = n[i];
+                // Inicialitzam a (qui multiplica a x) a 1
+                int a = 1;
+                
+                // Cridam al mètode que ens calcula c i m emprant el teorema 
+                //xinès dels residus
+                solucio = teoremaXinesDelsResidus(solucio, new int[] {a,residu, modul});
+                // Comprovam si ha hagut solució
+                if (solucio == null) {
+                    return null; 
+                }
+            }
 
-        if (solution == null) {
-            return null;    // Si no hay solución, retorna null
-        }
-    }
-
-    return solution;     // Retorna la solución del sistema de ecuaciones
-}   
-        
-        
-      return null; 
-    }
+            // Retornam la solució del exercici
+            return solucio;
+        }  
 
     /*
      * Donau la solució (totes) del sistema d'equacions
@@ -1170,25 +1181,31 @@ class Entrega {
      * podeu suposar que els tres arrays tenen la mateixa longitud.
      *
      * Si la solució és de la forma x ≡ c (mod m), retornau `new int[] { c, m }`, amb 0 ⩽ c < m.
-     * Si no en té, retornau null
+     * Si no en té, retornau null.
      */
-    static int[] exercici2b(int[] a, int[] b, int[] n) {
+        static int[] exercici2b(int[] a, int[] b, int[] n) {
           
-        
-    int[] equation = new int[] { a[0], b[0] };  // Inicializa la primera ecuación con el primer par (a[0], b[0])
+            // Array solucio inicialitzada ambe els primers nombres
+            int[] solucio = new int[] { a[0], b[0] };  
 
-    for (int i = 1; i < a.length; i++) {
-        equation = combineEquations(equation, new int[] { a[i], b[i] }, n[i]);  // Combina la ecuación actual con la ecuación anterior
+            // Recorregut on resolvem, emprant el teorema xinès del residu, cada
+            //una de les equacions congruents en funció de i
+            for (int i = 1; i < a.length; i++) {
+                
+                // Cridam al mètode que ens calcula c i m emprant el teorema 
+                //xinès dels residus
+                solucio = teoremaXinesDelsResidus(solucio, new int[] { a[i], b[i] ,n[i]});  
 
-        if (equation == null) {
-            return null;  // Si no hay solución, retorna null
+                // Comprovam si hi ha solucio
+                if (solucio == null) {
+                    return null;  
+                }
+            }
+
+            // Retornam la solució de l'exercici
+            return solucio;  
         }
-    }
-
-    return equation;  // Retorna la solución del sistema de ecuaciones
-}
-    }
-
+            
     /*
      * Suposau que n > 1. Donau-ne la seva descomposició en nombres primers, ordenada de menor a
      * major, on cada primer apareix tantes vegades com el seu ordre. Per exemple,
@@ -1199,8 +1216,10 @@ class Entrega {
      * (el que coneixeu com el mètode manual d'anar provant).
      */
     static ArrayList<Integer> exercici3a(int n) {
-      return new ArrayList<>(); // TO DO
-    }
+        // Retornam el resultat del mètode descomposicioEnPrimers() que ens 
+        //realitza la descomposicio
+        return descomposicioEnPrimers(n);
+    }   
 
     /*
      * Retornau el nombre d'elements invertibles a Z mòdul n³.
@@ -1211,12 +1230,163 @@ class Entrega {
      * No podeu utilitzar `long` per solucionar aquest problema. Necessitareu l'exercici 3a.
      */
     static int exercici3b(int n) {
-      return -1; // TO DO
+              
+      ArrayList<Integer> descomposicio = descomposicioEnPrimers(n);
+
+      //Emmagatzemam el elements de la descomposició dins una llista
+      List<Integer> llistaElements = new ArrayList<>(new HashSet<>(descomposicio));
+
+      // Array num on emmagatzemarem el nombre de vegades que apareix cada 
+      //element
+      int[] num = new int[llistaElements.size()];
+      
+      // Recorregut del elements de la llista per calcular quantes vegades 
+      //apareixen
+      for (Integer i : descomposicio){ 
+          num[llistaElements.indexOf(i)]++;
+      }
+      // Variable funcioFiEuler on calcularem la solució de l'exercici
+      int funcioFiEuler = 1;
+
+      //Calculam la funcio fi de euler emprant un recorregut de 0 fins a num
+      for (int i = 0; i < num.length; i++) {
+        
+        // La funcio Fi de Euler es resol amb l'equació p^r (pr) - p^r-1 (prmenys1)  
+        num[i] *= 3;
+        int pr = pow(llistaElements.get(i), num[i]); 
+        int prmenys1 = pow(llistaElements.get(i), num[i] - 1);
+        funcioFiEuler *= pr - prmenys1 ;
+      }
+
+      // Una vegada hem acabat el bucle, retornam la funcio Fi de Euler
+      return funcioFiEuler;
+    }
+    
+
+    // Mètode mcd que calcula el màxim comú divisor de 2 enters passats per 
+    //paràmetre
+    static int mcd(int a, int b) {
+        if (b == 0) {
+            return a;
+        } else {
+            return mcd(b, a % b);
+        }
+    }
+    
+    // Mètode teoremaXinesDelsResidus que ens retorna la solució de 2 equacions
+    //passades per paràmetre emprant l'algoritme xinès dels residus
+    static int[] teoremaXinesDelsResidus(int[] equacio1, int[] equacio2) {
+      // Extreim els coeficients (a), els residus (b) i els mòduls (m) de les 
+      //2 equaciones pasades per paràmetre
+      int a1 = equacio1[0];
+      int b1 = equacio1[1];
+      int m1 = equacio1[2];
+      int a2 = equacio2[0];
+      int b2 = equacio2[1];
+      int m2 = equacio2[2];
+
+      // Calculam el màxim comú divisor amb el métode estès d'Euclides
+      int[] resultatMCD = algoritmeEstesEuclides(m1, m2);
+      int mcd = resultatMCD[0];
+      // Extreim t1 i t2 tal que t1*m1 + t2*m2 = mcd
+      int t1 = resultatMCD[1];
+      int t2 = resultatMCD[2];
+
+      // Verficiam si la diferència de residus és divisble amb mcd
+      if ((b2 - b1) % mcd != 0) {
+        // No hi ha solució  
+        return null; 
+      }
+
+      // Calculam x0 
+      int x0 = (b1 * t2 * m2 + b2 * t1 * m1) % (m1 * m2);
+      // Calculam el módul de la solució 
+      int modul = m1 * m2;
+
+      // Retornam x0 i el mòdul dins un Array
+      return new int[] { x0, modul };
     }
 
+    // Mètode algoritmeEstesEuclides que calcula el màxim comú divisor de 2 enters
+    //passats per paràmetre i retorna el el mcd juntament amb x i y que resolen
+    //la seva equació
+    static int[] algoritmeEstesEuclides(int a, int b) {
+      // Si el primer nombre es 0, retorna b com a mcd, 0 com a x i 1 com a y
+      if (a == 0) {
+        return new int[] { b, 0, 1 };
+      }
+
+      // Calcula l'algoritme estès d'Euclides
+      int[] result = algoritmeEstesEuclides(b % a, a);
+      // Extreim el màxim comú divisor
+      int mcd = result[0];
+      // Extreim x1
+      int x1 = result[1];
+      // Extreim y1
+      int y1 = result[2];
+
+      // Calculam x amb l'equació corresponent
+      int x = y1 - (b / a) * x1;
+      // Y es igual a x1
+      int y = x1;
+
+      // Retornam els 3 valors dins un Array
+      return new int[] { mcd, x, y };
+    }    
+       
+    // Mètode descomposicioEnPrimers que realitza la descomposicio del nombre 
+    //passat per paràmetre. Aquesta descomposició s'emmagatzema en un ArrayList
+    //que conté tots els nombres primers, ordenats de menor a major on cada 
+    //primer apareix tantes vegades com el seu ordre que descomponen a n
+    static ArrayList<Integer> descomposicioEnPrimers(int n) {
+        // Inicialitzam l'ArrayList descomposicio on emmagatzemarem la descomposicio
+        //en nombres primers de n
+        ArrayList <Integer> descomposicio = new ArrayList<>();
+      /*
+      * Se empieza la descomposición a partir del 2, pero si el número que se introduce es un 1, se devolverá
+      * directamente el 1.
+      */
+      // La descomposició comença en 2
+      int factor_primer = 2;
+      // Comprovam si n es igual a 1, en cas de ser-ho, només retornam el 1
+      if(n == 1) {
+        descomposicio.add(n);
+      } else {
+        /*
+        * Mientras el número sea mayor o igual que el factor primo, se añadirá este factor a la descomposición y se
+        * dividirá el número por ese factor.
+        */
+        // Condició de que n sigui major que el factor primer
+        while (factor_primer <= n) {
+          // Comprovam que n sea divisible amb el factor primer
+          while (n % factor_primer == 0) {
+            // Emmagatzemam el factor dins l'ArrayList descomposicio
+            descomposicio.add(factor_primer);
+            // Dividim n entre el factor primer
+            n /= factor_primer;
+          }
+          // Una vegada ja no es divisible, vol dir que hem acabat amb aquest 
+          //factor primer, per tant hem d'augmentar el seu valor fins trobar el 
+          //següent
+          factor_primer++;
+        }
+      }
+      // Una vegada hem acabat, retornam l'ArrayList descomposicio amb tots els 
+      //nombres primers de n ordenats de menor a major
+      return descomposicio;
+    }
+    
+    static int pow(int nombre, int exponent) {
+      int result = nombre;
+
+      for (int i = 0; i < exponent - 1; i++){
+          result *= nombre;
+      }
+      return result;
+    }
     /*
      * Aquí teniu alguns exemples i proves relacionades amb aquests exercicis (vegeu `main`)
-     */
+     */        
     static void tests() {
       assertThat(Arrays.equals(exercici1(17, 1, 30), new int[] { 23, 30 }));
       assertThat(Arrays.equals(exercici1(-2, -4, 6), new int[] { 2, 3 }));
